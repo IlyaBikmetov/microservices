@@ -40,6 +40,7 @@ docker {
         baseImage.set("openjdk:17-alpine")
         maintainer.set("(c) Bikmetov")
         ports.set(listOf(8000))
+        images.set(listOf("ilyabikmetov/microservices:1.0"))
         jvmArgs.set(listOf("-Dspring.profiles.active=production", "-Xmx2048m"))
     }
 }
