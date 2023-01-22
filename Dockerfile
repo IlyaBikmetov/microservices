@@ -1,7 +1,9 @@
 FROM openjdk:17-alpine
-WORKDIR /microservices
+LABEL maintainer="(c) Bikmetov"
+WORKDIR /app
+COPY libs libs/
+COPY resources resources/
+COPY classes classes/
 
-COPY /build/libs/microservices-1.0-plain.jar build/
-WORKDIR /microservices/build
+ENTRYPOINT ["java", "-Dspring.profiles.active=production", "-Xmx2048m", "-cp", "/app/resources:/app/classes:/app/libs/*", "ru.ibikmetov.microservices.MicroservicesApplicationKt"]
 EXPOSE 8000
-ENTRYPOINT java -jar microservices-1.0-plain.jar
