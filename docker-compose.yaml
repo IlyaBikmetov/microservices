@@ -1,0 +1,7 @@
+version: "3.3"
+services:
+  spring-app:
+    image: ilyabikmetov/microservices:1.0
+    container_name: microservices
+    ports:
+      - "8000:8000"
