@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: app-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /otus/ilyabikmetov(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: app-service
+                port:
+                  number: 8000
