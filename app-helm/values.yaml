@@ -1,0 +1,5 @@
+replicaCount: 3
+
+container:
+  appimage: ilyabikmetov/microservices:2.0
+  dbimage: postgres:12.10

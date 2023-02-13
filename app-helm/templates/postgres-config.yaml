@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+    owner: IlyaBikmetov
+data:
+  POSTGRES_DB: userdb
+  POSTGRES_USER: login_users
+  POSTGRES_PASSWORD: fdr43v32
