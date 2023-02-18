@@ -10,7 +10,7 @@ spec:
     - host: arch.homework
       http:
         paths:
-          - path: /otus/ilyabikmetov(/|$)(.*)
+          - path: /otusapp/ilyabikmetov(/|$)(.*)
             pathType: Prefix
             backend:
               service:
