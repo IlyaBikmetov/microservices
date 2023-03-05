@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-deploy-{{ .Release.Name }}
+  name: {{ .Release.Name }}-deploy
   labels:
-    app: my-app-{{ .Release.Name }}
+    app: {{ .Release.Name }}-app
+    version: "2.0"
     owner: IlyaBikmetov
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      project: proj
+      project: {{ .Release.Name }}-proj
   template:
     metadata:
       labels:
-        project: proj
+        project: {{ .Release.Name }}-proj
+        app: {{ .Release.Name }}-app
     spec:
       containers:
         - name : proj-web
@@ -24,12 +26,12 @@ spec:
             - name: DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Release.Name }}-secret
                   key: username
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Release.Name }}-secret
                   key: password
           readinessProbe:
             tcpSocket:
@@ -42,13 +44,13 @@ spec:
             initialDelaySeconds: 15
             periodSeconds: 20
           volumeMounts:
-            - name: application-config
+            - name: {{ .Release.Name }}-application-config
               mountPath: "/app/config"
               readOnly: true
       volumes:
-        - name: application-config
+        - name: {{ .Release.Name }}-application-config
           configMap:
-            name: app-config
+            name: {{ .Release.Name }}-config
             items:
               - key: application.yaml
                 path: application.yaml

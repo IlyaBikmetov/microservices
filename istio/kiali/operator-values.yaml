@@ -1,0 +1,3 @@
+allowAdHocKialiImage: true
+image:
+  tag: "v1.33.1"

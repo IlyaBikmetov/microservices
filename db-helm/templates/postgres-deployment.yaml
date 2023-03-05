@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-deploy-{{ .Release.Name }}
+  name: {{ .Release.Name }}-deploy
   labels:
-    app: postgres-deploy-{{ .Release.Name }}
+    app: {{ .Release.Name }}-postgres
+    version: "2.0"
     owner: IlyaBikmetov
 spec:
   selector:

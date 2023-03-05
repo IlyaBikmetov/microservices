@@ -5,5 +5,4 @@ data:
     \   username: ${DATABASE_USERNAME}\r\n    password: ${DATABASE_PASSWORD}"
 kind: ConfigMap
 metadata:
-  name: app-config
-  namespace: default
+  name: {{ .Release.Name }}-config
