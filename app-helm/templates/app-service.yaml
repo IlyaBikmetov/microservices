@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: {{ .Release.Name }}-service
   labels:
     owner: IlyaBikmetov
 spec:
   selector:
-    project: proj
+    project: {{ .Release.Name }}-proj
   ports:
     - name      : app-listener
       protocol  : TCP
