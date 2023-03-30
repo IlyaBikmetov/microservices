@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deploy
+  labels:
+    app: {{ .Release.Name }}-app
+    version: "3.0"
+    owner: IlyaBikmetov
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      project: {{ .Release.Name }}-proj
+  template:
+    metadata:
+      labels:
+        project: {{ .Release.Name }}-proj
+        app: {{ .Release.Name }}-app
+    spec:
+      containers:
+        - name : proj-web
+          image: {{ .Values.container.appimage }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret
+                  key: password
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          volumeMounts:
+            - name: {{ .Release.Name }}-application-config
+              mountPath: "/app/config"
+              readOnly: true
+      volumes:
+        - name: {{ .Release.Name }}-application-config
+          configMap:
+            name: {{ .Release.Name }}-config
+            items:
+              - key: application.yaml
+                path: application.yaml

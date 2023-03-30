@@ -1,0 +1,17 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/userdb
+    username: login_users
+    password: fdr43v32
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG

@@ -5,12 +5,7 @@ info:
   version: "1.0.0"
   title: User Service
   contact:
-    email: schetinnikov@gmail.com
-servers:
-  - description: Example Server
-    url: http://example.domain/api/v1/
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/otus55/users/1.0.0
+    email: ilyab_v@mail.com
 tags:
   - name: user
     description: Operations about user
@@ -55,7 +50,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
-  /ad/update:
+  /user/update:
     post:
       tags:
         - user
@@ -75,7 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
-  /ad/delete:
+  /user/delete:
     post:
       tags:
         - user
@@ -106,11 +101,12 @@ components:
           format: int64
         username:
           type: string
-          maxLength: 256
         firstName:
           type: string
+          maxLength: 250
         lastName:
           type: string
+          maxLength: 250
         email:
           type: string
           format: email

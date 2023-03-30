@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    owner: IlyaBikmetov
+spec:
+  selector:
+    project: {{ .Release.Name }}-proj
+  ports:
+    - name      : app-listener
+      protocol  : TCP
+      port      : 8000
+      targetPort: 8000
+  type: LoadBalancer

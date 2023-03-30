@@ -1,4 +1,0 @@
-replicaCount: 1
-
-container:
-  appimage: ilyabikmetov/microservices:2.0

@@ -1,0 +1,31 @@
+version: "3.3"
+services:
+  spring-app:
+    image: ilyabikmetov/microservices:3.0
+    container_name: microservices
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-database
+
+  spring-auth:
+    image: ilyabikmetov/auth-service:2.0
+    container_name: auth-services
+    ports:
+      - "8000:8000"
+
+  echoserver:
+    image: ilyabikmetov/echo-service:2.0
+    container_name: echo-services
+    ports:
+      - "8000:8000"
+
+  postgres-database:
+    image: postgres:12.10
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "userdb"
+      POSTGRES_USER: "login_users"
+      POSTGRES_PASSWORD: "fdr43v32"
+    ports:
+      - "5432:5432"
