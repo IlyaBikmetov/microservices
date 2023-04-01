@@ -1,0 +1,4 @@
+replicaCount: 1
+
+container:
+  appimage: ilyabikmetov/echo-service:2.0

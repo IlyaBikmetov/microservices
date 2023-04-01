@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  application.yaml: "server:\r\n  port: 8000\r\nspring:\r\n  datasource:\r\n    generate-unique-name:
+    false\r\n    driver-class-name: org.postgresql.Driver\r\n    url: jdbc:postgresql://postgres-service/userdb\r\n
+    \   username: ${DATABASE_USERNAME}\r\n    password: ${DATABASE_PASSWORD}"
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config

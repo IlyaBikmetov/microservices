@@ -1,0 +1,4 @@
+replicaCount: 1
+
+container:
+  appimage: ilyabikmetov/microservices:3.0

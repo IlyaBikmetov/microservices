@@ -1,0 +1,65 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingress
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: auth-service
+  namespace: ilyabikmetov
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - istio-system/ingress
+  http:
+    - name: "auth-whitelisted"
+      match:
+        - uri:
+            prefix: /otusapp/ilyabikmetov/auth/
+        - uri:
+            prefix: /auth/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 8000
+            host: auth-service.ilyabikmetov.svc.cluster.local
+
+    - name: "c"
+      match:
+        - uri:
+            prefix: /otusapp/ilyabikmetov/api/v1/user/create
+      rewrite:
+        uri: /api/v1/user/create
+      route:
+        - destination:
+            port:
+              number: 8000
+            host: app1-service.ilyabikmetov.svc.cluster.local
+
+    - name: "rud"
+      match:
+        - uri:
+            prefix: /otusapp/ilyabikmetov/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            port:
+              number: 8000
+            host: app1-service.ilyabikmetov.svc.cluster.local

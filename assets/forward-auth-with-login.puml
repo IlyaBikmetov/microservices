@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant "Api gateway"
+participant "Auth service"
+participant "Service"
+
+alt #LightBlue session cookie exists
+
+    User -> "Api gateway" : Запрос /uri
+    "Api gateway" -> "Auth service" : Запрос авторизации
+    "Auth service" -> "Api gateway" : Авторизован - 200
+    "Api gateway" -> "Service" : Запрос /uri с заголовками из авторизации
+    "Service" -> "User" : Ответ
+
+else #Pink session cookie not exists
+
+    User -> "Api gateway" : Запрос /uri
+    "Api gateway" -> "Auth service" : Запрос авторизации
+    "Auth service" -> User : Не авторизован - 401
+    User -> "Api gateway" : Запрос /login
+    "Api gateway" -> "Auth service" : Запрос авторизации
+    "Auth service" -> "User" : Авторизован - 200, установка session cookie
+    User -> "Api gateway" : Запрос /uri
+    "Api gateway" -> "Auth service" : Запрос авторизации
+    "Auth service" -> "Api gateway" : Авторизован - 200
+    "Api gateway" -> "Service" : Запрос /uri с заголовками из авторизации
+    "Service" -> "User" : Ответ
+
+end
+
+@enduml

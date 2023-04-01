@@ -1,0 +1,44 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: "jwt-auth"
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: istio-ingressgateway
+  jwtRules:
+    - issuer: "http://auth-service.ilyabikmetov"
+      jwksUri: "http://auth-service.ilyabikmetov/.well-known/jwks.json"
+      forwardOriginalToken: true
+      outputPayloadToHeader: "x-jwt-token"
+      fromHeaders:
+        - name: "x-auth-token"
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: "authz"
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: istio-ingressgateway
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            paths: ["/auth*"]
+    - to:
+        - operation:
+            paths: ["/admin*"]
+      when:
+        - key: request.auth.claims[groups]
+          values: ["admin"]
+    - from:
+        - source:
+            requestPrincipals: [ "*" ]
+      to:
+        - operation:
+            notPaths: ["/auth*", "/admin*"]
