@@ -7,3 +7,18 @@ spring:
     url: jdbc:postgresql://postgres:5432/userdb
     username: login_users
     password: fdr43v32
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    distribution:
+      slo:
+        http.server.requests: 10ms, 50ms, 100ms, 200ms, 300ms, 400ms, 500ms
+    export:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

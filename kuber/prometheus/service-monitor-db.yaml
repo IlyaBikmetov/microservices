@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: postgresql-exporter
+    meta.helm.sh/release-namespace: ilyabikmetov
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: postgresql-exporter-prometheus-postgres-exporter
+  namespace: default
+spec:
+  endpoints:
+    - targetPort: http
+  jobLabel: postgresql-exporter-prometheus-postgres-exporter
+  namespaceSelector:
+    matchNames:
+      - ilyabikmetov
+  selector:
+    matchLabels:
+      app: prometheus-postgres-exporter
+      release: postgresql-exporter

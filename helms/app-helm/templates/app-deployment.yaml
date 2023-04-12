@@ -4,13 +4,14 @@ metadata:
   name: {{ .Release.Name }}-deploy
   labels:
     app: {{ .Release.Name }}-app
-    version: "3.0"
+    version: "4.0"
     owner: IlyaBikmetov
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       project: {{ .Release.Name }}-proj
+      app: {{ .Release.Name }}-app
   template:
     metadata:
       labels:
