@@ -25,6 +25,8 @@ dependencies {
     implementation("org.springframework.data:spring-data-jpa:3.0.1")
     implementation("org.hibernate:hibernate-core:6.0.2.Final")
     implementation("org.postgresql:postgresql:42.5.1")
+    implementation("io.micrometer:micrometer-registry-prometheus")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

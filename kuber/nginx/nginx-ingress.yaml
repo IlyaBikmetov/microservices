@@ -1,13 +1,21 @@
 controller:
   kind: DaemonSet
-  
+
   reportNodeInternalIp: true
 
   hostPort:
     enabled: true
     ports:
       http: 80
-      https: 443
+
+  metrics:
+    enabled: true
+    service:
+      type: NodePort
+      annotations:
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
 
   service:
+    enableHttps: false
     type: NodePort
