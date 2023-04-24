@@ -1,4 +1,4 @@
 replicaCount: 1
 
 container:
-  appimage: ilyabikmetov/microservices:3.0
+  appimage: ilyabikmetov/microservice-order:3.0

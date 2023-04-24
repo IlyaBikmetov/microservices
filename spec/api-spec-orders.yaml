@@ -1,0 +1,192 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: Order Service
+  contact:
+    email: ilyab_v@mail.com
+tags:
+  - name: order
+    description: Operations about order
+paths:
+  /order/create:
+    post:
+      tags:
+        - order
+      summary: Create order
+      operationId: orderCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /order/read:
+    post:
+      tags:
+        - order
+      summary: Read order
+      operationId: orderRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /order/update:
+    post:
+      tags:
+        - order
+      summary: Update order
+      operationId: orderUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReadDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /order/delete:
+    post:
+      tags:
+        - order
+      summary: Delete order
+      operationId: orderDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReadDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /order/orders:
+    post:
+      tags:
+        - order
+      summary: List orders
+      operationId: ordersList
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrdersRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdersResponse'
+
+
+components:
+  schemas:
+    OrderObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        orderName:
+          type: string
+          maxLength: 250
+        quantity:
+          type: integer
+          format: int64
+
+    OrdersList:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderObject'
+
+    OrderId:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+    UserName:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 250
+
+    Result:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+    OrderCreateUpdateRequest:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/OrderObject'
+
+    OrderReadDeleteRequest:
+      type: object
+      properties:
+        orderId:
+          $ref: '#/components/schemas/OrderId'
+
+    OrderResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Result'
+        order:
+          $ref: '#/components/schemas/OrderObject'
+
+    OrdersRequest:
+      type: object
+      properties:
+        userName:
+          $ref: '#/components/schemas/UserName'
+
+    OrdersResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Result'
+        orders:
+          $ref: '#/components/schemas/OrdersList'

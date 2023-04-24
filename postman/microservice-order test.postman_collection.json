@@ -1,0 +1,487 @@
+{
+	"info": {
+		"_postman_id": "da8c66ff-13ce-4099-89ed-71da5b53b32a",
+		"name": "microservice-order test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create-order1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"id1\", jsonData.order.id);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					},
+					{
+						"key": "x-request-key",
+						"value": "82e79781-086c-483d-85d4-899220bf4d32",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"order\":{\"id\":null,\"orderName\":\"Order №6446544\",\"quantity\":73534}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/create",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_old-order1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					},
+					{
+						"key": "x-request-key",
+						"value": "82e79781-086c-483d-85d4-899220bf4d32",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"order\":{\"id\":null,\"orderName\":\"Order №6446544\",\"quantity\":73534}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/create",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-old-order1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					},
+					{
+						"key": "x-request-key",
+						"value": "82e79781-086c-483d-85d4-899220bf4d32",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"order\":{\"id\":null,\"orderName\":\"Order №6446544\",\"quantity\":73534}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/create",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check-orders-count1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.result.code).to.eql('0');\r",
+							"    pm.expect(responseJson.result.message).to.eql('Success');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Count orders\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.orders.orders.length).to.eql(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userName\":{\"username\": \"user4446\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-order2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.collectionVariables.set(\"id2\", jsonData.order.id);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					},
+					{
+						"key": "x-request-key",
+						"value": "82e79781-086c-483d-85d4-899220bf4d33",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"order\":{\"id\":null,\"orderName\":\"Order №6232134\",\"quantity\":7434}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/create",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check-orders-count2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.result.code).to.eql('0');\r",
+							"    pm.expect(responseJson.result.message).to.eql('Success');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Count orders\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.orders.orders.length).to.eql(2);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userName\":{\"username\": \"user4446\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-order1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"orderId\":{\"id\": {{id1}}}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/delete",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check-orders-count3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The response has all properties\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.result.code).to.eql('0');\r",
+							"    pm.expect(responseJson.result.message).to.eql('Success');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Count orders\", () => {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.orders.orders.length).to.eql(1);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-username",
+						"value": "user4446",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"userName\":{\"username\": \"user4446\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "arch.homework/otusapp/ilyabikmetov",
+			"type": "default"
+		},
+		{
+			"key": "id1",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "id2",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

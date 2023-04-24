@@ -1,22 +1,30 @@
 version: "3.3"
 services:
-  spring-app:
-    image: ilyabikmetov/microservices:3.0
-    container_name: microservices
+  microservice-user:
+    image: ilyabikmetov/microservice-user:3.0
+    container_name: microservice-user
     ports:
       - "8000:8000"
     depends_on:
       - postgres-database
 
-  spring-auth:
-    image: ilyabikmetov/auth-service:2.0
-    container_name: auth-services
+  microservice-order:
+    image: ilyabikmetov/microservice-order:3.0
+    container_name: microservice-order
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-database
+
+  microservice-auth:
+    image: ilyabikmetov/microservice-auth:2.0
+    container_name: microservice-auth
     ports:
       - "8000:8000"
 
-  echoserver:
-    image: ilyabikmetov/echo-service:2.0
-    container_name: echo-services
+  microservice-echo:
+    image: ilyabikmetov/microservice-echo:2.0
+    container_name: microservice-echo
     ports:
       - "8000:8000"
 
