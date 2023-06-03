@@ -1,0 +1,132 @@
+  /parking/readparking:
+    post:
+      tags:
+        - parking
+      summary: Read parking
+      operationId: read
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReadParkingRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingResponse'
+  /parking/cancelbooking:
+    post:
+      tags:
+        - parking
+      summary: Cancel booking
+      operationId: cancelbooking
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopParkingCancelBookingRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+  /parking/stopparking:
+    post:
+      tags:
+        - parking
+      summary: Stop parking
+      operationId: Stop parking
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopParkingCancelBookingRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+  /parking/freeparking:
+    post:
+      tags:
+        - parking
+      summary: Free parking
+      operationId: Free parking
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingsResponse'
+
+
+
+
+
+
+
+    UserName:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 250
+
+
+
+    ReadParkingRequest:
+      type: object
+      properties:
+        parking:
+          $ref: '#/components/schemas/ParkingObject'
+
+    StopParkingCancelBookingRequest:
+      type: object
+      properties:
+        parking:
+          $ref: '#/components/schemas/Result'
+
+    ParkingsList:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParkingObject'
+
+
+
+    ParkingsResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Result'
+        orders:
+          $ref: '#/components/schemas/ParkingsList'
+
+    ParkingRequest:
+      type: object
+      properties:
+        userName:
+          $ref: '#/components/schemas/UserName'
+

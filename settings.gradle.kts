@@ -22,5 +22,6 @@ pluginManagement {
     }
 }
 
-include("users")
-include("orders")
+include("parking")
+include("money")
+include("dwh")

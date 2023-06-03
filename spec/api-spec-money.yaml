@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: Money Service
+  contact:
+    email: ilyab_v@mail.ru
+tags:
+  - name: money
+    description: Operations about money
+paths:
+  /money/check:
+    post:
+      tags:
+        - money
+      summary: Start money
+      operationId: moneyStart
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyResponse'
+
+  /money/operation:
+    get:
+      tags:
+        - money
+      summary: Read money
+      operationId: moneyRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperationRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyResponse'
+
+components:
+  schemas:
+    CheckRequest:
+      type: object
+      properties:
+        money:
+          properties:
+            username:
+              type: string
+              maxLength: 250
+
+    OperationRequest:
+      type: object
+      properties:
+        money:
+          properties:
+            username:
+              type: string
+              maxLength: 250
+            money:
+              type: number
+              multipleOf: 0.01
+            operation:
+              $ref: '#/components/schemas/Operation'
+
+    Operation:
+      type: string
+      enum:
+        - add
+        - substr
+
+    MoneyResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
