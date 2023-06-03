@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: DWH Service
+  contact:
+    email: ilyab_v@mail.ru
+tags:
+  - name: DWH
+    description: Operations about parking
+paths:
+  /dwh/put:
+    post:
+      tags:
+        - DWH
+      summary: DWH
+      operationId: DWH
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingDwhRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParkingDwhResponse'
+
+components:
+  schemas:
+    ParkingObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+          maxLength: 250
+        place:
+          type: string
+          maxLength: 250
+        start:
+          type: string
+          format: 'date-time'
+        stop:
+          type: string
+          format: 'date-time'
+        money:
+          type: number
+          multipleOf: 0.01
+
+    ParkingDwhRequest:
+      type: object
+      properties:
+        parking:
+          $ref: '#/components/schemas/ParkingObject'
+
+    ParkingDwhResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string

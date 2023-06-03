@@ -1,9 +1,9 @@
 server:
-  port: 8000
+  port: 8001
 spring:
   datasource:
     generate-unique-name: false
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5432/userdb
-    username: login_users
+    url: jdbc:postgresql://postgres:5432/parkingdb
+    username: parking_user
     password: fdr43v32

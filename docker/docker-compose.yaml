@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.7"
 services:
   microservice-user:
     image: ilyabikmetov/microservice-user:3.0
@@ -16,6 +16,30 @@ services:
     depends_on:
       - postgres-database
 
+  microservice-parking:
+    image: ilyabikmetov/microservice-parking:3.0
+    container_name: microservice-parking
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-database
+
+  microservice-money:
+    image: ilyabikmetov/microservice-money:3.0
+    container_name: microservice-money
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres-database
+
+  microservice-dwh:
+    image: ilyabikmetov/microservice-dwh:3.0
+    container_name: microservice-dwh
+    ports:
+      - "8002:8002"
+    depends_on:
+      - mongodb-database
+
   microservice-auth:
     image: ilyabikmetov/microservice-auth:2.0
     container_name: microservice-auth
@@ -32,8 +56,14 @@ services:
     image: postgres:12.10
     container_name: postgres
     environment:
-      POSTGRES_DB: "userdb"
-      POSTGRES_USER: "login_users"
+      POSTGRES_DB: "parkingdb"
+      POSTGRES_USER: "parking_user"
       POSTGRES_PASSWORD: "fdr43v32"
     ports:
       - "5432:5432"
+
+  mongodb-database:
+    image: mongo:6-jammy
+    container_name: mongodb
+    ports:
+      - "27017:27017"
