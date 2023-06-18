@@ -40,6 +40,14 @@ services:
     depends_on:
       - mongodb-database
 
+  microservice-places:
+    image: ilyabikmetov/microservice-places:3.0
+    container_name: microservice-places
+    ports:
+      - "8003:8003"
+    depends_on:
+      - postgres-database
+
   microservice-auth:
     image: ilyabikmetov/microservice-auth:2.0
     container_name: microservice-auth

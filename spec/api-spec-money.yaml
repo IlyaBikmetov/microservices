@@ -82,6 +82,8 @@ components:
       enum:
         - add
         - substr
+        - hold
+        - cancelled
 
     MoneyResponse:
       type: object

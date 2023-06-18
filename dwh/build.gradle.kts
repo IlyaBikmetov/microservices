@@ -24,8 +24,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("org.springframework.data:spring-data-jpa:3.0.1")
     implementation("org.hibernate:hibernate-core:6.0.2.Final")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.postgresql:postgresql:42.5.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

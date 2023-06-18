@@ -12,3 +12,5 @@ microservices:
     url: http://localhost:8001
   dwh:
     url: http://localhost:8002
+  places:
+    url: http://localhost:8003

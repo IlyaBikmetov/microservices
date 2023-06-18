@@ -9,6 +9,8 @@ spring:
     password: fdr43v32
 microservices:
   money:
-    url: http://microservice-money:8001
+    url: http://money-service:8000
   dwh:
-    url: http://microservice-dwh:8002
+    url: http://dwh-service:8000
+  places:
+    url: http://places-service:8000

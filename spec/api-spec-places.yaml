@@ -1,0 +1,134 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: Places Service
+  contact:
+    email: ilyab_v@mail.ru
+tags:
+  - name: Places
+    description: Operations about parking
+paths:
+  /places/read:
+    post:
+      tags:
+        - place
+      summary: Read places
+      operationId: Read places
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceResponse'
+
+  /places/update:
+    post:
+      tags:
+        - place
+      summary: Update place
+      operationId: Update place
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaceUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceResponse'
+
+  /places/free:
+    get:
+      tags:
+        - places
+      summary: Free places
+      operationId: Free places
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacesResponse'
+
+components:
+  schemas:
+    PlaceObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        place:
+          type: string
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/ParkingStatus'
+
+    ParkingStatus:
+      type: string
+      enum:
+        - free
+        - booking
+        - parking
+
+    PlaceReadRequest:
+      type: object
+      properties:
+        place:
+          properties:
+            placeId:
+              type: integer
+              format: int64
+
+    PlaceUpdateRequest:
+      type: object
+      properties:
+        place:
+          properties:
+            placeId:
+              type: integer
+              format: int64
+            status:
+              $ref: '#/components/schemas/ParkingStatus'
+
+    PlaceResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Result'
+        place:
+          $ref: '#/components/schemas/PlaceObject'
+
+    PlacesResponse:
+      type: object
+      properties:
+        result:
+          $ref: '#/components/schemas/Result'
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlaceObject'
+
+    Result:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string

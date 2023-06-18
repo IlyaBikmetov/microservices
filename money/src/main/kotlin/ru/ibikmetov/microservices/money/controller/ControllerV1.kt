@@ -18,12 +18,12 @@ class ControllerV1(private val moneyService: MoneyService) {
         return System.getenv().entries.joinToString("\n")
     }
 
-    @RequestMapping("api/v1/money/check", method = [RequestMethod.POST])
+    @RequestMapping("api/v1/check", method = [RequestMethod.POST])
     fun check(@RequestBody checkRequest: CheckRequest,
               @RequestHeader("x-username") username: String?,
               @RequestHeader("x-request-key") requestKey: String?): MoneyResponse = moneyService.check(checkRequest, username)
 
-    @RequestMapping("api/v1/money/operation", method = [RequestMethod.POST])
+    @RequestMapping("api/v1/operation", method = [RequestMethod.POST])
     fun operation(@RequestBody operationRequest: OperationRequest,
                   @RequestHeader("x-username") username: String?,
                   @RequestHeader("x-request-key") requestKey: String?): MoneyResponse = moneyService.operation(operationRequest, username, requestKey)

@@ -17,12 +17,21 @@ data class Money(
     var username: String?,
     @Column(name = "money")
     var money: BigDecimal?,
+    @Column(name = "hold_money")
+    var holdMoney: BigDecimal?,
+    @Column(name = "last_operation")
+    var lastOperation: String?,
+    @Column(name = "last_value")
+    var lastValue: BigDecimal?,
     @Column(name = "requestkey")
     var requestKey: String?,
     @Column(name = "updated")
-    var updated: LocalDateTime?
+    var updated: LocalDateTime?,
 ) {
     constructor() : this(null,
+        null,
+        null,
+        null,
         null,
         null,
         null,

@@ -9,8 +9,5 @@ spec:
   selector:
     project: {{ .Release.Name }}-proj
   ports:
-    - name      : app-listener
-      protocol  : TCP
-      port      : 8000
-      targetPort: 8000
-  type: LoadBalancer
+    - port: 8000
+  type: NodePort

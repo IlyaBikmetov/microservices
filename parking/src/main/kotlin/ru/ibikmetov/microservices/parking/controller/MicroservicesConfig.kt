@@ -10,4 +10,7 @@ class MicroservicesConfig {
 
     @Value("\${microservices.dwh.url}")
     val dwhURL: String? = null
+
+    @Value("\${microservices.places.url}")
+    val placesURL: String? = null
 }

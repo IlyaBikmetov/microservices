@@ -8,6 +8,7 @@ import ru.ibikmetov.microservices.money.model.Money
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Optional
 
 @Service
 class MoneyService(var repo: MoneyRepository) {
@@ -40,7 +41,11 @@ class MoneyService(var repo: MoneyRepository) {
         val result: MoneyResponse = try {
             if (!username.isNullOrEmpty()) {
                 if (!requestKey.isNullOrEmpty()) {
-                    val o = repo.findByUsernameAndRequestKey(username, requestKey)
+                    val o = if (request.money?.operation == Operation.CANCELLED) {
+                        repo.findByUsernameAndLastOperationAndRequestKey(username, request.money.operation.toString(), requestKey)
+                    } else {
+                        repo.findByUsernameAndLastOperationAndLastValueAndRequestKey(username, request.money?.operation.toString(), request.money?.money.toString(), requestKey)
+                    }
                     var moneyResult: String? = null
                     if (!o.isEmpty) {
                         moneyResult = "Operation success"
@@ -50,12 +55,28 @@ class MoneyService(var repo: MoneyRepository) {
                             val money = m.get()
                             if (request.money?.operation == Operation.ADD) {
                                 money.money = money.money?.plus(request.money.money!!)
+                                money.lastOperation = request.money.operation.toString()
+                                money.lastValue = request.money.money
+                                money.requestKey = requestKey
+                                money.updated = LocalDateTime.now()
                                 repo.save(money)
                                 moneyResult = "Operation success"
-                            } else {
-                                if (request.money?.operation == Operation.SUBSTR
-                                    && money.money!!.compareTo(request.money.money!!) == 1) {
+                            }
+                            if (request.money?.operation == Operation.SUBSTR) {
+                                money.money = money.money?.minus(request.money.money!!)
+                                money.lastOperation = request.money.operation.toString()
+                                money.lastValue = request.money.money
+                                money.requestKey = requestKey
+                                money.updated = LocalDateTime.now()
+                                repo.save(money)
+                                moneyResult = "Operation success"
+                            }
+                            if (request.money?.operation == Operation.HOLD) {
+                                if (money.money!!.compareTo(request.money.money!!) == 1) {
                                     money.money = money.money?.minus(request.money.money)
+                                    money.holdMoney = request.money.money
+                                    money.lastOperation = request.money.operation.toString()
+                                    money.lastValue = request.money.money
                                     money.requestKey = requestKey
                                     money.updated = LocalDateTime.now()
                                     repo.save(money)
@@ -64,17 +85,35 @@ class MoneyService(var repo: MoneyRepository) {
                                     moneyResult = "Money is tight"
                                 }
                             }
+                            if (request.money?.operation == Operation.CANCELLED) {
+                                if (money.holdMoney != null) {
+                                    log.info("CANCELLED")
+                                    money.money = money.money?.plus(money.holdMoney!!)
+                                    money.holdMoney = null
+                                    money.lastOperation = request.money.operation.toString()
+                                    money.lastValue = null
+                                    money.requestKey = requestKey
+                                    money.updated = LocalDateTime.now()
+                                    repo.save(money)
+                                    moneyResult = "Operation success"
+                                } else {
+                                    moneyResult = "Money is not hold"
+                                }
+                            }
                         } else {
                             val money = Money()
                             if (request.money?.operation == Operation.ADD) {
                                 money.username = username
                                 money.money = request.money.money
+                                money.lastOperation = request.money.operation.toString()
+                                money.lastValue = request.money.money
                                 money.requestKey = requestKey
                                 money.updated = LocalDateTime.now()
                                 repo.save(money)
                                 moneyResult = "Operation success"
                             }
-                            if (request.money?.operation == Operation.SUBSTR) {
+                            if (request.money?.operation == Operation.SUBSTR ||
+                                request.money?.operation == Operation.HOLD) {
                                 moneyResult = "Account not found"
                             }
                         }

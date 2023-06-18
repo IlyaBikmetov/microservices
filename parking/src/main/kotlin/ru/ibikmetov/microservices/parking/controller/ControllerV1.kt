@@ -21,19 +21,16 @@ class ControllerV1(private val parkingService: ParkingService) {
         return System.getenv().entries.joinToString("\n")
     }
 
-    @RequestMapping("api/v1/parking/start", method = [RequestMethod.POST])
+    @RequestMapping("api/v1/start", method = [RequestMethod.POST])
     fun orderCreate(@RequestBody parkingRequest: StartRequest,
                    @RequestHeader("x-username") username: String?,
                    @RequestHeader("x-request-key") requestKey: String?): ParkingResponse = parkingService.start(parkingRequest, username, requestKey)
-    @RequestMapping("api/v1/parking/read", method = [RequestMethod.GET])
+    @RequestMapping("api/v1/read", method = [RequestMethod.GET])
     fun userRead(@RequestBody parkingRequest: ParkingId,
                  @RequestHeader("x-username") username: String?): ParkingResponse = parkingService.read(parkingRequest, username)
 
-    @RequestMapping("api/v1/parking/stop", method = [RequestMethod.POST])
+    @RequestMapping("api/v1/stop", method = [RequestMethod.POST])
     fun userRead(@RequestBody parkingRequest: StopRequest,
                  @RequestHeader("x-username") username: String?,
                  @RequestHeader("x-request-key") requestKey: String?): ParkingResponse = parkingService.stop(parkingRequest, username, requestKey)
-
-    @RequestMapping("api/v1/parking/freeparkings", method = [RequestMethod.GET])
-    fun ordersList(@RequestHeader("x-username") username: String?): ParkingsResponse = parkingService.freeparkings(username)
 }
