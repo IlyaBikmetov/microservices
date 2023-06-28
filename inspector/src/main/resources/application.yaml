@@ -8,12 +8,4 @@ spring:
     username: parking_user
     password: fdr43v32
   kafka:
-    bootstrap-servers: kafka:9092,localhost:29092
-
-microservices:
-  money:
-    url: http://localhost:8001
-  dwh:
-    url: http://localhost:8002
-  places:
-    url: http://localhost:8003
+    bootstrap-servers: my-cluster-kafka-plain-0:9092,my-cluster-kafka-plain-bootstrap:9092

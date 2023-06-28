@@ -23,6 +23,7 @@ class ParkingDwhService(var repo: ParkingDwhRepository) {
                     if (!o.isEmpty) {
                         if (o.get().id == request.parking?.id
                             && o.get().username == request.parking?.username
+                            && o.get().numberVehicle == request.parking?.numberVehicle
                             && o.get().place == request.parking?.place
                             && o.get().start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) == request.parking?.start
                             && o.get().stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")) == request.parking?.stop
@@ -36,6 +37,7 @@ class ParkingDwhService(var repo: ParkingDwhRepository) {
                         val parking = ParkingDwh()
                         parking.id = request.parking?.id
                         parking.username = request.parking?.username
+                        parking.numberVehicle = request.parking?.numberVehicle
                         parking.place = request.parking?.place
                         parking.start = LocalDateTime.parse(request.parking?.start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))
                         parking.stop = LocalDateTime.parse(request.parking?.stop, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))

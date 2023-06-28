@@ -1,15 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-plugins {
-    id("org.springframework.boot") version "3.0.2"
-    id("io.spring.dependency-management") version "1.1.0"
-    id("com.bmuschko.docker-spring-boot-application") version "7.4.0"
-    id("org.openapi.generator") version "6.3.0"
-    id ("org.jetbrains.kotlin.plugin.noarg") version "1.7.22"
-    id ("org.jetbrains.kotlin.plugin.allopen") version "1.7.22"
-    kotlin("jvm") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-}
+        plugins {
+            id("org.springframework.boot") version "3.0.2"
+            id("io.spring.dependency-management") version "1.1.0"
+            id("com.bmuschko.docker-spring-boot-application") version "7.4.0"
+            id("org.openapi.generator") version "6.3.0"
+            id ("org.jetbrains.kotlin.plugin.noarg") version "1.7.22"
+            id ("org.jetbrains.kotlin.plugin.allopen") version "1.7.22"
+            kotlin("jvm") version "1.7.22"
+            kotlin("plugin.spring") version "1.7.22"
+        }
 
 repositories {
     mavenCentral()
@@ -22,12 +22,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.data:spring-data-jpa:3.0.1")
     implementation("org.hibernate:hibernate-core:6.0.2.Final")
     implementation("org.postgresql:postgresql:42.5.1")
-    implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.kafka:spring-kafka:3.0.0")
+    implementation("org.springframework.kafka:spring-kafka")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -38,13 +37,13 @@ sourceSets {
 }
 
 openApiGenerate {
-    val openapiGroup = "${rootProject.group}.parking.api.v1"
+    val openapiGroup = "${rootProject.group}.inspector.api.v1"
     generatorName.set("kotlin")
     packageName.set(openapiGroup)
     apiPackage.set("$openapiGroup.api")
     modelPackage.set("$openapiGroup")
     invokerPackage.set("$openapiGroup.invoker")
-    inputSpec.set("$rootDir/spec/api-spec-parking.yaml")
+    inputSpec.set("$rootDir/spec/api-spec-inspector.yaml")
 
     /**
      * Здесь указываем, что нам нужны только модели, все остальное не нужно
@@ -71,7 +70,7 @@ docker {
         baseImage.set("openjdk:17-alpine")
         maintainer.set("(c) Bikmetov")
         ports.set(listOf(8000))
-        images.set(listOf("ilyabikmetov/microservice-parking:$version"))
+        images.set(listOf("ilyabikmetov/microservice-inspector:$version"))
         jvmArgs.set(listOf("-Dspring.profiles.active=production", "-Xmx2048m"))
     }
 }
@@ -98,7 +97,7 @@ tasks.withType<Test> {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "ru.ibikmetov.microservices.ParkingApplication"
+        attributes["Main-Class"] = "ru.ibikmetov.microservices.DwhApplication"
     }
 }
 

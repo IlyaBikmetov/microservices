@@ -38,3 +38,10 @@ spec:
                 name: places-service
                 port:
                   number: 8000
+          - path: /otusapp/ilyabikmetov/inspector(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: inspector-service
+                port:
+                  number: 8000

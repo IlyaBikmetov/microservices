@@ -42,6 +42,9 @@ components:
         username:
           type: string
           maxLength: 250
+        numberVehicle:
+          type: string
+          maxLength: 20
         place:
           type: string
           maxLength: 250

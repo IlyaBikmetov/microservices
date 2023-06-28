@@ -2,20 +2,26 @@ package ru.ibikmetov.microservices.parking.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import ru.ibikmetov.microservices.parking.api.v1.*
 import ru.ibikmetov.microservices.parking.data.ParkingRepository
+import ru.ibikmetov.microservices.parking.model.Claim
 import ru.ibikmetov.microservices.parking.model.Parking
 import java.math.BigDecimal
-import java.math.MathContext
 import java.math.RoundingMode
 import java.net.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+
 @Service
-class ParkingService(var repo: ParkingRepository, var microservicesConfig: MicroservicesConfig) {
+class ParkingService(val repo: ParkingRepository
+                    , val kafka: KafkaTemplate<String, Claim>?
+                    , val microservicesConfig: MicroservicesConfig) {
+
     private val log = LoggerFactory.getLogger(ControllerV1::class.java)
 
     fun rest(method: String, username: String?, requestKey: String?, content: String, type: String): String {
@@ -59,11 +65,13 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
 
                         val parking = o.get()
                         if (o.get().placeId == request.parking?.placeId
+                            && o.get().numberVehicle == request.parking?.numberVehicle
                             && place?.status == request.parking?.status
                         ) {
                             uObject = ParkingObject(
                                 parking.id,
                                 parking.username,
+                                parking.numberVehicle,
                                 place?.place,
                                 parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
                                 parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
@@ -105,6 +113,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                             uObject = ParkingObject(
                                 parking.id,
                                 parking.username,
+                                parking.numberVehicle,
                                 place?.place,
                                 parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
                                 parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
@@ -130,6 +139,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                                 if (moneyResult.code.equals("0") && moneyResult.message.equals("Operation success")) {
                                     parking = Parking()
                                     parking.username = username
+                                    parking.numberVehicle = request.parking?.numberVehicle
                                     parking.requestKey = requestKey
                                     parking.placeId = request.parking?.placeId
                                     parking.start = LocalDateTime.now().withNano(0)
@@ -138,6 +148,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                                     uObject = ParkingObject(
                                         parking.id,
                                         parking.username,
+                                        parking.numberVehicle,
                                         place?.place,
                                         parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
                                         parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
@@ -188,6 +199,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                      uObject = ParkingObject(
                          parking.id,
                          parking.username,
+                         parking.numberVehicle,
                          place?.place,
                          parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
                          parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
@@ -217,7 +229,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                 val parking = o.get()
                 if (username == "admin" || username == parking.username) {
 
-                    val placeContent = "{\"place\":{\"placeId\": ${parking.placeId}}}"
+                    var placeContent = "{\"place\":{\"placeId\": ${parking.placeId}}}"
                     val response = rest(microservicesConfig.placesURL + "/api/v1/read", username, null, placeContent, "POST")
                     val place = ObjectMapper().readValue(response, PlaceResponse::class.java).place
 
@@ -227,25 +239,26 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                         //--------
                         var moneyContent = "{\"money\":{\"username\": \"${username}\", \"operation\": \"cancelled\"}}"
                         var moneyResponse = rest(microservicesConfig.moneyURL + "/api/v1/operation", username, requestKey, moneyContent, "POST")
-                        var moneyResult = ObjectMapper().readValue(moneyResponse, MoneyResponse::class.java)
+                        ObjectMapper().readValue(moneyResponse, MoneyResponse::class.java)
 
                         val money = BigDecimal(ChronoUnit.MINUTES.between(parking.start, parking.stop) * 10.1 + 100)
                             .setScale(2, RoundingMode.HALF_EVEN)
                          moneyContent = "{\"money\":{\"username\": \"${username}\", \"money\": ${money}, \"operation\": \"substr\"}}"
                         moneyResponse = rest(microservicesConfig.moneyURL + "/api/v1/operation", username, requestKey, moneyContent, "POST")
-                        moneyResult = ObjectMapper().readValue(moneyResponse, MoneyResponse::class.java)
+                        val moneyResult = ObjectMapper().readValue(moneyResponse, MoneyResponse::class.java)
 
                         if (moneyResult.code.equals("0")) {
                             parking.money = money
                         }
                         repo.save(parking)
                         //--------
-                        val placeContent = "{\"place\":{\"placeId\": ${place?.id}, \"status\": \"free\"}}"
+                        placeContent = "{\"place\":{\"placeId\": ${place?.id}, \"status\": \"free\"}}"
                         val responseResult = rest(microservicesConfig.placesURL + "/api/v1/update", username, requestKey, placeContent, "POST")
                         ObjectMapper().readValue(responseResult, PlaceResponse::class.java).place
                         //--------
                         val dwhContent = "{\"parking\":{\"id\": \"${parking.id}\"," +
                                 "\"username\": \"${parking.username}\"," +
+                                "\"numberVehicle\": \"${parking.numberVehicle}\"," +
                                 "\"place\": \"${place?.place}\"," +
                                 "\"start\": \"${parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))}\"," +
                                 "\"stop\": \"${parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))}\"," +
@@ -260,6 +273,7 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
                         uObject = ParkingObject(
                             parking.id,
                             parking.username,
+                            parking.numberVehicle,
                             place?.place,
                             parking.start?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
                             parking.stop?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
@@ -279,5 +293,28 @@ class ParkingService(var repo: ParkingRepository, var microservicesConfig: Micro
         }
         log.info("result: $result")
         return ParkingResponse(result, uObject)
+    }
+
+    fun claim(request: ClaimRequest, username: String?, requestKey: String?): Result {
+        val res: Result = try {
+            if (!username.isNullOrEmpty()) {
+                if (!requestKey.isNullOrEmpty()) {
+                    kafka?.send("parking_claims", Claim(
+                        request.claim?.place,
+                        username,
+                        requestKey,
+                        )
+                    )
+                    Result("0", "Success")
+                } else {
+                    Result("1", "Request key not find")
+                }
+            } else {
+                Result("1", "Not authorized")
+            }
+        } catch (e: Exception) {
+            Result("1", e.message)
+        }
+        return res
     }
 }

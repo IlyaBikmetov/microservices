@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8004
 spring:
   datasource:
     generate-unique-name: false
@@ -9,11 +9,3 @@ spring:
     password: fdr43v32
   kafka:
     bootstrap-servers: kafka:9092,localhost:29092
-
-microservices:
-  money:
-    url: http://localhost:8001
-  dwh:
-    url: http://localhost:8002
-  places:
-    url: http://localhost:8003

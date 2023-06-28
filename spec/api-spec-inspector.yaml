@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: Money Service
+  contact:
+    email: ilyab_v@mail.ru
+tags:
+  - name: money
+    description: Operations about money
+paths:
+  /claim/add:
+    post:
+      tags:
+        - claim
+      summary: Add claim
+      operationId: claimAdd
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Result'
+
+components:
+  schemas:
+    ClaimRequest:
+      type: object
+      properties:
+        claim:
+          properties:
+            place:
+              type: string
+              maxLength: 20
+
+    Result:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string

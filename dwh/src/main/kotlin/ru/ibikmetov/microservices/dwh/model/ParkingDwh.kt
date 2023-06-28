@@ -15,6 +15,8 @@ data class ParkingDwh(
     var id: Long?,
     @Column(name = "username")
     var username: String?,
+    @Column(name = "numbervehicle")
+    var numberVehicle: String?,
     @Column(name = "place")
     var place: String?,
     @Column(name = "start")
@@ -27,6 +29,7 @@ data class ParkingDwh(
     var requestKey: String?,
 ) {
     constructor() : this(null,
+        null,
         null,
         null,
         null,
