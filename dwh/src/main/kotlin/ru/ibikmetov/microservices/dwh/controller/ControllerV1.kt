@@ -19,7 +19,7 @@ class ControllerV1(private val parkingDwhService: ParkingDwhService) {
         return System.getenv().entries.joinToString("\n")
     }
 
-    @RequestMapping("api/v1/dwh/put", method = [RequestMethod.POST])
+    @RequestMapping("api/v1/put", method = [RequestMethod.POST])
     fun orderCreate(@RequestBody parkingDwhRequest: ParkingDwhRequest,
                     @RequestHeader("x-username") username: String?,
                     @RequestHeader("x-request-key") requestKey: String?): ParkingDwhResponse = parkingDwhService.put(parkingDwhRequest, username, requestKey)

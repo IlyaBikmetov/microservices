@@ -27,6 +27,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.1")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.kafka:spring-kafka:3.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

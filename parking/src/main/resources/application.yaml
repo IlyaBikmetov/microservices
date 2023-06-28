@@ -7,8 +7,13 @@ spring:
     url: jdbc:postgresql://postgres:5432/parkingdb
     username: parking_user
     password: fdr43v32
+  kafka:
+    bootstrap-servers: my-cluster-kafka-plain-0:9092,my-cluster-kafka-plain-bootstrap:9092
+
 microservices:
   money:
-    url: http://microservice-money:8001
+    url: http://money-service:8000
   dwh:
-    url: http://microservice-dwh:8002
+    url: http://dwh-service:8000
+  places:
+    url: http://places-service:8000

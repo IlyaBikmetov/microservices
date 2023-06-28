@@ -1,4 +1,4 @@
-package ru.ibikmetov.microservices.parking.model
+package ru.ibikmetov.microservices.places.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Entity
 @Table(name = "parking_place")
 @Component
-data class ParkingPlace (
+data class Place (
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -10,10 +10,38 @@ spec:
     - host: arch.homework
       http:
         paths:
-          - path: /otusapp/ilyabikmetov(/|$)(.*)
+          - path: /otusapp/ilyabikmetov/parking(/|$)(.*)
             pathType: Prefix
             backend:
               service:
-                name: app1-service
+                name: parking-service
+                port:
+                  number: 8000
+          - path: /otusapp/ilyabikmetov/dwh(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: dwh-service
+                port:
+                  number: 8000
+          - path: /otusapp/ilyabikmetov/money(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: money-service
+                port:
+                  number: 8000
+          - path: /otusapp/ilyabikmetov/places(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: places-service
+                port:
+                  number: 8000
+          - path: /otusapp/ilyabikmetov/inspector(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: inspector-service
                 port:
                   number: 8000

@@ -6,6 +6,6 @@ metadata:
     app: postgres
     owner: IlyaBikmetov
 data:
-  POSTGRES_DB: userdb
-  POSTGRES_USER: login_users
+  POSTGRES_DB: parkingdb
+  POSTGRES_USER: parking_user
   POSTGRES_PASSWORD: fdr43v32

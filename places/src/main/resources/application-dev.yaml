@@ -1,0 +1,9 @@
+server:
+  port: 8003
+spring:
+  datasource:
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/parkingdb
+    username: parking_user
+    password: fdr43v32

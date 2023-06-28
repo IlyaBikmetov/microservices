@@ -16,6 +16,8 @@ data class Parking(
     var id: Long?,
     @Column(name = "username")
     var username: String?,
+    @Column(name = "numbervehicle")
+    var numberVehicle: String?,
     @Column(name = "place_id")
     var placeId: Long?,
     @Column(name = "start")
@@ -30,6 +32,7 @@ data class Parking(
     var updated: LocalDateTime?
 ) {
     constructor() : this(null,
+        null,
         null,
         null,
         null,

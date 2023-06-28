@@ -23,5 +23,7 @@ pluginManagement {
 }
 
 include("parking")
+include("places")
 include("money")
 include("dwh")
+include("inspector")

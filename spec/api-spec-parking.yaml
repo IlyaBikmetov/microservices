@@ -73,19 +73,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/ParkingResponse'
 
-  /parking/freeparkings:
-    get:
+  /parking/claim:
+    post:
       tags:
         - parking
-      summary: Free parking
-      operationId: parkingFree
+      summary: Claim parking
+      operationId: parkingClaim
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+        required: true
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ParkingsResponse'
+                $ref: '#/components/schemas/Result'
 
 components:
   schemas:
@@ -98,6 +105,9 @@ components:
         username:
           type: string
           maxLength: 250
+        numberVehicle:
+          type: string
+          maxLength: 20
         place:
           type: string
           maxLength: 250
@@ -122,6 +132,9 @@ components:
             id:
               type: integer
               format: int64
+            numberVehicle:
+              type: string
+              maxLength: 20
             placeId:
               type: integer
               format: int64
@@ -139,6 +152,15 @@ components:
             place:
               type: string
               maxLength: 50
+
+    ClaimRequest:
+      type: object
+      properties:
+        claim:
+          properties:
+            place:
+              type: string
+              maxLength: 20
 
     ParkingStatus:
       type: string
@@ -172,23 +194,15 @@ components:
         parking:
           $ref: '#/components/schemas/ParkingObject'
 
-    ParkingsResponse:
+    PlaceResponse:
       type: object
       properties:
         result:
           $ref: '#/components/schemas/Result'
-        parkings:
-          $ref: '#/components/schemas/ParkingsPlaceObjectList'
+        place:
+          $ref: '#/components/schemas/PlaceObject'
 
-    ParkingsPlaceObjectList:
-      type: object
-      properties:
-        parking:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParkingPlaceObject'
-
-    ParkingPlaceObject:
+    PlaceObject:
       type: object
       properties:
         id:
@@ -203,8 +217,7 @@ components:
     MoneyResponse:
       type: object
       properties:
-        result:
-          $ref: '#/components/schemas/Result'
-        moneyResult:
+        code:
           type: string
-          maxLength: 250
+        message:
+          type: string
